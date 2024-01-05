@@ -20,8 +20,15 @@ services:
       - "8080:8080"
     tty: true
     stdin_open: true
+    volumes:
+      - ../app:/app
     networks:
       - rtdbNetwork
+    # command: >
+    #   bash -c "
+    #     apt-get update &&
+    #     apt-get install -y python3-pip &&
+    #     pip3 install --no-cache-dir -r app/requirements.txt"
 
   kafka:
     image: wurstmeister/kafka
@@ -38,15 +45,33 @@ services:
     networks:
       - rtdbNetwork
 
-  python:
-    image: python:3.11
-    container_name: app
+
+  yolov5:
+    image: ultralytics/yolov5
+    container_name: yolov5
+    ports:
+      - "9093:9093"
     volumes:
-      - ./python:/python
-    depends_on:
-      - kafka
+      - ../app:/app
+      - ../media:/media
     networks:
       - rtdbNetwork
+    ipc: "host"
+    stdin_open: true
+    tty: true
+  
+  clickhouse:
+    image: yandex/clickhouse-server
+    container_name: clickhouse
+    ports:
+      - "8123:8123"
+    volumes:
+      - ../Project/Docker_init_scripts/clickhouse:/docker-entrypoint-initdb.d
+      - ./data:/var/lib/clickhouse/user_files
+    networks:
+      - rtdbNetwork
+    
 
 networks:
   rtdbNetwork:
+
