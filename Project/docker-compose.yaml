@@ -4,7 +4,7 @@ services:
     image: yandex/clickhouse-server
     container_name: my-clickhouse
     ports:
-      - "8123:10001"
+      - "8123:8123"
     volumes:
       - ./Docker-init-scripts/clickhouse:/docker-entrypoint-initdb.d
 
