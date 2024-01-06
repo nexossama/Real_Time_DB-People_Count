@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators import PythonOperator
 import json
 from hive_script import save_to_hive
 from pyspark_script import process_data
@@ -24,7 +24,7 @@ dag = DAG(
     'batch_dag',
     default_args=default_args,
     description='DAG for batch layer data processing',
-    schedule_interval=timedelta(minutes=1),
+    schedule_interval=timedelta(minutes=2),
 )
 
 # Define an Airflow task to execute the data processing and upload function
