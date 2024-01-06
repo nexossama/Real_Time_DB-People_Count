@@ -1,7 +1,7 @@
 import torch
 import supervision as sv
 import numpy as np
-
+import json
 from time import localtime, strftime, time
 
 from kafka import KafkaProducer
@@ -12,7 +12,7 @@ def send_message(message, kafka_topic):
     producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
     try:
         # Send a message to the Kafka topic
-        producer.send(kafka_topic, value=str(message).encode('utf-8'))
+        producer.send(kafka_topic, value=json.dumps(message).encode('utf-8'))
         print(f"Message sent to Kafka topic: {kafka_topic}")
     except Exception as e:
         print(f"Error sending message to Kafka: {e}")
@@ -119,8 +119,9 @@ def process_frame(frame: np.ndarray, i) -> np.ndarray:
         d[z_name] = len(detections_filtered)
         frame = box_annotator.annotate(scene=frame, detections=detections_filtered, skip_label=True)
         frame = zone_annotator.annotate(scene=frame)
+    print("type from producer",type(d))
     send_message(d, "rtdbTopic")
-    #print(d)
+    
 
     return frame
 

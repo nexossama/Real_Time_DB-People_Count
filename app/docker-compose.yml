@@ -66,12 +66,15 @@ services:
     ports:
       - "8123:8123"
     volumes:
-      - ../Project/Docker_init_scripts/clickhouse:/docker-entrypoint-initdb.d
-      - ./data:/var/lib/clickhouse/user_files
+      - ../Project/Docker-init-scripts/clickhouse:/docker-entrypoint-initdb.d
+      - ./data:/files
     networks:
       - rtdbNetwork
     
 
 networks:
   rtdbNetwork:
+
+
+
 
