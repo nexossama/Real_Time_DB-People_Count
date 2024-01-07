@@ -7,10 +7,10 @@ CREATE TABLE IF NOT EXISTS Zone
 (
     id_zone UInt32,
     name_zone String
-) ENGINE = MergeTree ORDER BY id_zone;
+) ENGINE = MergeTree Primary Key id_zone;
 
 -- Create Record table
-CREATE TABLE IF NOT EXISTS Record2
+CREATE TABLE IF NOT EXISTS Record
 (
     id_record String,
     time DateTime,
